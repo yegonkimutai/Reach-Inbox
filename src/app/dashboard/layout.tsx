@@ -8,8 +8,6 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar />
 
       {/* Main Area */}
       <div className="flex flex-col flex-1">
