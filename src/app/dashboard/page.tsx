@@ -6,11 +6,13 @@ import ScheduledEmailsTable from "@/components/ScheduledEmailsTable"
 import SentEmailsTable from "@/components/SentEmailsTable";
 import Button from "@/components/Button";
 import ComposeEmailModal from "@/components/ComposeEmailModal";
+import { useRouter } from "next/navigation";
 
 type Section = "scheduled" | "sent";
 
 export default function DashboardPage() {
-  const [activeSection, setActiveSection] = useState<Section>('scheduled')
+  const router = useRouter()
+  const [activeSection, setActiveSection] = useState<Section>("scheduled")
   const [open, setOpen] = useState(false)
 
   return (
@@ -25,7 +27,7 @@ export default function DashboardPage() {
       <div className="flex-1 p-6 space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-semibold">Emails</h1>
-          <Button onClick={() => setOpen(true)}>
+          <Button onClick={() => router.push("/dashboard/compose")}>
             + Compose New Email
           </Button>
         </div>
@@ -38,7 +40,7 @@ export default function DashboardPage() {
           <SentEmailsTable emails={[]} />
         )}
 
-        {open && <ComposeEmailModal onClose={() => setOpen(false)} />}
+        {open && <ComposeEmailModal/>}
       </div>
     </div>
   );

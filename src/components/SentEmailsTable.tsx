@@ -1,19 +1,28 @@
-type Email = {
-  email: string;
-  subject: string;
-  sentTime: string;
-  status: "sent" | "failed";
+import { EmailRecord } from "@/types/email";
+
+type Props = {
+  emails: EmailRecord[];
+  loading?: boolean;
 };
 
 export default function SentEmailsTable({
   emails,
-}: {
-  emails: Email[];
-}) {
-  if (emails.length === 0) {
+  loading = false,
+}: Props) {
+  if (loading) {
     return (
-      <div className="bg-white p-10 text-center border rounded-lg text-gray-500">
-        No sent emails
+      <div className="bg-white p-6 rounded shadow">
+        <p className="text-sm text-gray-500">Loading scheduled emails...</p>
+      </div>
+    );
+  }
+
+  if (!emails.length) {
+    return (
+      <div className="bg-white p-6 rounded shadow">
+        <p className="text-sm text-gray-500">
+          No sent emails yet.
+        </p>
       </div>
     );
   }
@@ -34,16 +43,12 @@ export default function SentEmailsTable({
             <tr key={i} className="border-t">
               <td className="p-3">{email.email}</td>
               <td className="p-3">{email.subject}</td>
-              <td className="p-3">{email.sentTime}</td>
               <td className="p-3">
-                <span
-                  className={
-                    email.status === "sent"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }
-                >
-                  {email.status}
+                {new Date(email.scheduledAt).toLocaleString()}
+                </td>
+              <td className="p-3">
+                <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-700">
+                  Sent
                 </span>
               </td>
             </tr>

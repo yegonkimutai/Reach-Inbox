@@ -1,19 +1,28 @@
-type Email = {
-  email: string;
-  subject: string;
-  scheduledTime: string;
-  status: string;
+import { EmailRecord } from "@/types/email";
+
+type Props = {
+  emails: EmailRecord[];
+  loading?: boolean;
 };
 
 export default function ScheduledEmailsTable({
   emails,
-}: {
-  emails: Email[];
-}) {
-  if (emails.length === 0) {
+  loading = false,
+}: Props) {
+  if (loading) {
     return (
-      <div className="bg-white p-10 text-center border rounded-lg text-gray-500">
-        No scheduled emails
+      <div className="bg-white p-6 rounded shadow">
+        <p className="text-sm text-gray-500">Loading scheduled emails...</p>
+      </div>
+    );
+  }
+
+  if (!emails.length) {
+    return (
+      <div className="bg-white p-6 rounded shadow">
+        <p className="text-sm text-gray-500">
+          No scheduled emails yet.
+        </p>
       </div>
     );
   }
@@ -30,14 +39,16 @@ export default function ScheduledEmailsTable({
           </tr>
         </thead>
         <tbody>
-          {emails.map((email, i) => (
-            <tr key={i} className="border-t">
+          {emails.map((email) => (
+            <tr key={email.id} className="border-t">
               <td className="p-3">{email.email}</td>
               <td className="p-3">{email.subject}</td>
-              <td className="p-3">{email.scheduledTime}</td>
               <td className="p-3">
-                <span className="text-yellow-600">
-                  {email.status}
+              {new Date(email.scheduledAt).toLocaleString()}
+              </td>
+              <td className="p-3">
+                <span className="px-2 py-1 rounded text-xs bg-yellow-100 text-yellow-700">
+                  Scheduled
                 </span>
               </td>
             </tr>
